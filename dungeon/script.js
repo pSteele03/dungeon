@@ -131,26 +131,28 @@ document.addEventListener('DOMContentLoaded', function() {
             createEntrance();
         }
 
-        // Connect rooms with straight corridors
+        // Connect all rooms with corridors
         for (let i = 0; i < rooms.length - 1; i++) {
             const roomA = rooms[i];
-            const roomB = rooms[i + 1];
-
             const centerA = {
                 x: Math.floor(roomA.x + roomA.width / 2),
                 y: Math.floor(roomA.y + roomA.height / 2)
             };
-            const centerB = {
-                x: Math.floor(roomB.x + roomB.width / 2),
-                y: Math.floor(roomB.y + roomB.height / 2)
-            };
 
-            // Create a straight corridor with one turn, avoid overlapping parallel corridors
-            if (centerA.x !== centerB.x) {
-                createHorizontalCorridor(centerA.y, centerA.x, centerB.x);
-            }
-            if (centerA.y !== centerB.y) {
-                createVerticalCorridor(centerB.x, centerA.y, centerB.y);
+            for (let j = i + 1; j < rooms.length; j++) {
+                const roomB = rooms[j];
+                const centerB = {
+                    x: Math.floor(roomB.x + roomB.width / 2),
+                    y: Math.floor(roomB.y + roomB.height / 2)
+                };
+
+                // Create corridors between centers of all pairs of rooms
+                if (centerA.x !== centerB.x) {
+                    createHorizontalCorridor(centerA.y, centerA.x, centerB.x);
+                }
+                if (centerA.y !== centerB.y) {
+                    createVerticalCorridor(centerB.x, centerA.y, centerB.y);
+                }
             }
         }
 
